@@ -190,6 +190,18 @@
     <Compile Include="Migrations\202010230954581_AddEventAndEventType.Designer.cs">
       <DependentUpon>202010230954581_AddEventAndEventType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202109222331536_AddEntries.cs" />
+    <Compile Include="Migrations\202109222331536_AddEntries.Designer.cs">
+      <DependentUpon>202109222331536_AddEntries.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109222352556_AddMatches.cs" />
+    <Compile Include="Migrations\202109222352556_AddMatches.Designer.cs">
+      <DependentUpon>202109222352556_AddMatches.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109222359196_AddTableNameToMatch.cs" />
+    <Compile Include="Migrations\202109222359196_AddTableNameToMatch.Designer.cs">
+      <DependentUpon>202109222359196_AddTableNameToMatch.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -287,6 +299,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010230954581_AddEventAndEventType.resx">
       <DependentUpon>202010230954581_AddEventAndEventType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109222331536_AddEntries.resx">
+      <DependentUpon>202109222331536_AddEntries.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109222352556_AddMatches.resx">
+      <DependentUpon>202109222352556_AddMatches.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109222359196_AddTableNameToMatch.resx">
+      <DependentUpon>202109222359196_AddTableNameToMatch.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

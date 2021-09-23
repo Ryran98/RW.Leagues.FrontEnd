@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RW.Leagues.FrontEnd.Models
 {
+    [Table("tb_Match")]
     public class Match
     {
         public int Id { get; set; }
