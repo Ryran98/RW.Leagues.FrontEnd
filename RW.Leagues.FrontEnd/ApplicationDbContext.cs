@@ -11,6 +11,7 @@ namespace RW.Leagues.FrontEnd
         public DbSet<Event> Events { get; set; }
         public DbSet<Entry> Entries { get; set; }
         public DbSet<Match> Matches { get; set; }
+        public DbSet<Country> Countries { get; set; }
         public ApplicationDbContext() : base("LeagueDb") { }
 
         public static ApplicationDbContext Create()

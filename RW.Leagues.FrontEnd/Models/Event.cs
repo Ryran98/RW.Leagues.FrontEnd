@@ -11,8 +11,8 @@ namespace RW.Leagues.FrontEnd.Models
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
-        [Required]
         public EventType Type { get; set; }
+        [Required]
         public int TypeId { get; set; }
         public List<Entry> Entries { get; set; }
     }
