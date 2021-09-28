@@ -12,112 +12,111 @@ using RW.Leagues.FrontEnd.Models;
 
 namespace RW.Leagues.FrontEnd.Controllers
 {
-    public class PlayerController : Controller
+    public class EventController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Player
+        // GET: Event
         public async Task<ActionResult> Index()
         {
-            return View(await db.Players.ToListAsync());
+            return View(await db.Events.ToListAsync());
         }
 
-        // GET: Player/Details/5
+        // GET: Event/Details/5
         public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
-            Player player = await db.Players.FindAsync(id);
-
-            if (player == null)
+            Event @event = await db.Events.FindAsync(id);
+            if (@event == null)
             {
                 return HttpNotFound();
             }
-
-            player.Country = await db.Countries.FindAsync(player.CountryId);
-
-            return View(player);
+            return View(@event);
         }
 
-        // GET: Player/Create
+        // GET: Event/Create
         public ActionResult Create()
         {
+            ViewBag.TypeId = new SelectList(db.EventTypes, "Id", "Name");
             return View();
         }
 
-        // POST: Player/Create
+        // POST: Event/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,FirstName,LastName,Rating,DateOfBirth,CountryId")] Player player)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,TypeId")] Event @event)
         {
             if (ModelState.IsValid)
             {
-                db.Players.Add(player);
+                db.Events.Add(@event);
                 await db.SaveChangesAsync();
-                return RedirectToAction("Details", new { @id = player.Id });
+                return RedirectToAction("Index");
             }
 
-            return View(player);
+            ViewBag.TypeId = new SelectList(db.EventTypes, "Id", "Name", @event.TypeId);
+            return View(@event);
         }
 
-        // GET: Player/Edit/5
+        // GET: Event/Edit/5
         public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Player player = await db.Players.FindAsync(id);
-            if (player == null)
+            Event @event = await db.Events.FindAsync(id);
+            if (@event == null)
             {
                 return HttpNotFound();
             }
-            return View(player);
+            ViewBag.TypeId = new SelectList(db.EventTypes, "Id", "Name", @event.TypeId);
+            return View(@event);
         }
 
-        // POST: Player/Edit/5
+        // POST: Event/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,FirstName,LastName,DateOfBirth")] Player player)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,Name,TypeId")] Event @event)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(player).State = EntityState.Modified;
+                db.Entry(@event).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(player);
+            ViewBag.TypeId = new SelectList(db.EventTypes, "Id", "Name", @event.TypeId);
+            return View(@event);
         }
 
-        // GET: Player/Delete/5
+        // GET: Event/Delete/5
         public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Player player = await db.Players.FindAsync(id);
-            if (player == null)
+            Event @event = await db.Events.FindAsync(id);
+            if (@event == null)
             {
                 return HttpNotFound();
             }
-            return View(player);
+            return View(@event);
         }
 
-        // POST: Player/Delete/5
+        // POST: Event/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            Player player = await db.Players.FindAsync(id);
-            db.Players.Remove(player);
+            Event @event = await db.Events.FindAsync(id);
+            db.Events.Remove(@event);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }

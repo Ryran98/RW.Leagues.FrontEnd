@@ -170,6 +170,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
+    <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PlayerController.cs" />
@@ -212,8 +213,21 @@
     <Compile Include="Migrations\202109242351105_AddRatingToPlayer.Designer.cs">
       <DependentUpon>202109242351105_AddRatingToPlayer.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202109252350585_AddAgeGroupAndRank.cs" />
+    <Compile Include="Migrations\202109252350585_AddAgeGroupAndRank.Designer.cs">
+      <DependentUpon>202109252350585_AddAgeGroupAndRank.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109260008141_AddSeedNumberToEntry.cs" />
+    <Compile Include="Migrations\202109260008141_AddSeedNumberToEntry.Designer.cs">
+      <DependentUpon>202109260008141_AddSeedNumberToEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109282315569_AddAgeGroupToEntry.cs" />
+    <Compile Include="Migrations\202109282315569_AddAgeGroupToEntry.Designer.cs">
+      <DependentUpon>202109282315569_AddAgeGroupToEntry.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AgeGroup.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Entry.cs" />
@@ -222,6 +236,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Match.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\Rank.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -286,6 +301,11 @@
     <Content Include="Views\Player\Details.cshtml" />
     <Content Include="Views\Player\Edit.cshtml" />
     <Content Include="Views\Player\Index.cshtml" />
+    <Content Include="Views\Event\Create.cshtml" />
+    <Content Include="Views\Event\Delete.cshtml" />
+    <Content Include="Views\Event\Details.cshtml" />
+    <Content Include="Views\Event\Edit.cshtml" />
+    <Content Include="Views\Event\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -331,6 +351,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202109242351105_AddRatingToPlayer.resx">
       <DependentUpon>202109242351105_AddRatingToPlayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109252350585_AddAgeGroupAndRank.resx">
+      <DependentUpon>202109252350585_AddAgeGroupAndRank.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109260008141_AddSeedNumberToEntry.resx">
+      <DependentUpon>202109260008141_AddSeedNumberToEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109282315569_AddAgeGroupToEntry.resx">
+      <DependentUpon>202109282315569_AddAgeGroupToEntry.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

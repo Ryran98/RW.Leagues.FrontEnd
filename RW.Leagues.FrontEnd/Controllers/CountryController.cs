@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using RW.Leagues.FrontEnd.Models;
@@ -12,7 +13,15 @@ namespace RW.Leagues.FrontEnd.Controllers
         [HttpPost]
         public JsonResult All()
         {
-            return Json(db.Countries.ToList());
+            try
+            {
+                return Json(db.Countries.ToList());
+            }
+            catch (Exception e)
+            {
+                Session["error"] = e.Message;
+                return Json("An error has occurred");
+            }
         }
     }
 }

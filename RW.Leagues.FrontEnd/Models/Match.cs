@@ -14,7 +14,7 @@ namespace RW.Leagues.FrontEnd.Models
         [Required]
         public int EntryBId { get; set; }
         [Required]
-        public int Round { get; set; }
+        public int RoundNumber { get; set; }
         [Required]
         public int PlayerAGamesWon { get; set; }
         [Required]
