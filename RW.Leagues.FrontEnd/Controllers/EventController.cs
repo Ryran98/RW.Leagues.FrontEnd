@@ -34,6 +34,9 @@ namespace RW.Leagues.FrontEnd.Controllers
             {
                 return HttpNotFound();
             }
+
+            @event.Type = await db.EventTypes.FindAsync(@event.TypeId);
+
             return View(@event);
         }
 
