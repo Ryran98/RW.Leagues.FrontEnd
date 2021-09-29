@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 using RW.Leagues.FrontEnd;
 using RW.Leagues.FrontEnd.Models;
 
@@ -19,7 +20,10 @@ namespace RW.Leagues.FrontEnd.Controllers
         // GET: Player
         public async Task<ActionResult> Index()
         {
-            return View(await db.Players.ToListAsync());
+            List<Player> players = await db.Players.ToListAsync();
+            players.ForEach(p => p.Country = db.Countries.Find(p.CountryId));
+
+            return View(players);
         }
 
         // GET: Player/Details/5
@@ -45,6 +49,7 @@ namespace RW.Leagues.FrontEnd.Controllers
         // GET: Player/Create
         public ActionResult Create()
         {
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name");
             return View();
         }
 
@@ -72,11 +77,15 @@ namespace RW.Leagues.FrontEnd.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Player player = await db.Players.FindAsync(id);
+
             if (player == null)
             {
                 return HttpNotFound();
             }
+
+            ViewBag.CountryId = new SelectList(db.Countries, "Id", "Name", player.CountryId);
             return View(player);
         }
 
@@ -85,7 +94,7 @@ namespace RW.Leagues.FrontEnd.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,FirstName,LastName,DateOfBirth")] Player player)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,FirstName,LastName,Rating,DateOfBirth,CountryId")] Player player)
         {
             if (ModelState.IsValid)
             {
@@ -93,6 +102,7 @@ namespace RW.Leagues.FrontEnd.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+
             return View(player);
         }
 
@@ -103,11 +113,16 @@ namespace RW.Leagues.FrontEnd.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Player player = await db.Players.FindAsync(id);
+
             if (player == null)
             {
                 return HttpNotFound();
             }
+
+            player.Country = await db.Countries.FindAsync(player.CountryId);
+
             return View(player);
         }
 
@@ -119,6 +134,7 @@ namespace RW.Leagues.FrontEnd.Controllers
             Player player = await db.Players.FindAsync(id);
             db.Players.Remove(player);
             await db.SaveChangesAsync();
+
             return RedirectToAction("Index");
         }
 
@@ -128,6 +144,7 @@ namespace RW.Leagues.FrontEnd.Controllers
             {
                 db.Dispose();
             }
+
             base.Dispose(disposing);
         }
     }

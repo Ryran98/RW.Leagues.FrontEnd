@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using RW.Leagues.FrontEnd;
 using RW.Leagues.FrontEnd.Models;
+using WebGrease.Css.Extensions;
 
 namespace RW.Leagues.FrontEnd.Controllers
 {
@@ -19,7 +20,10 @@ namespace RW.Leagues.FrontEnd.Controllers
         // GET: Event
         public async Task<ActionResult> Index()
         {
-            return View(await db.Events.ToListAsync());
+            List<Event> events = await db.Events.ToListAsync();
+            events.ForEach(e => e.Type = db.EventTypes.Find(e.TypeId));
+
+            return View(events);
         }
 
         // GET: Event/Details/5
@@ -29,7 +33,9 @@ namespace RW.Leagues.FrontEnd.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Event @event = await db.Events.FindAsync(id);
+
             if (@event == null)
             {
                 return HttpNotFound();
@@ -72,11 +78,14 @@ namespace RW.Leagues.FrontEnd.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Event @event = await db.Events.FindAsync(id);
+
             if (@event == null)
             {
                 return HttpNotFound();
             }
+
             ViewBag.TypeId = new SelectList(db.EventTypes, "Id", "Name", @event.TypeId);
             return View(@event);
         }
@@ -94,6 +103,7 @@ namespace RW.Leagues.FrontEnd.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+
             ViewBag.TypeId = new SelectList(db.EventTypes, "Id", "Name", @event.TypeId);
             return View(@event);
         }
@@ -105,11 +115,16 @@ namespace RW.Leagues.FrontEnd.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             Event @event = await db.Events.FindAsync(id);
+
             if (@event == null)
             {
                 return HttpNotFound();
             }
+
+            @event.Type = await db.EventTypes.FindAsync(@event.TypeId);
+
             return View(@event);
         }
 
@@ -121,6 +136,7 @@ namespace RW.Leagues.FrontEnd.Controllers
             Event @event = await db.Events.FindAsync(id);
             db.Events.Remove(@event);
             await db.SaveChangesAsync();
+
             return RedirectToAction("Index");
         }
 
@@ -130,6 +146,7 @@ namespace RW.Leagues.FrontEnd.Controllers
             {
                 db.Dispose();
             }
+
             base.Dispose(disposing);
         }
     }
