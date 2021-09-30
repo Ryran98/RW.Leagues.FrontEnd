@@ -42,6 +42,10 @@ namespace RW.Leagues.FrontEnd.Controllers
             }
 
             @event.Type = await db.EventTypes.FindAsync(@event.TypeId);
+            @event.Entries = await db.Entries.Where(e => e.EventId == @event.Id).ToListAsync();
+
+            ViewBag.PlayerId = new SelectList(db.Players, "Id", "FullName");
+            ViewBag.AgeGroupId = new SelectList(db.AgeGroups, "Id", "Name");
 
             return View(@event);
         }

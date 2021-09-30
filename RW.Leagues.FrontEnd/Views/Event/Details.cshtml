@@ -1,4 +1,5 @@
-﻿@model RW.Leagues.FrontEnd.Models.Event
+﻿@using RW.Leagues.FrontEnd.Models
+@model RW.Leagues.FrontEnd.Models.Event
 
 @{
     ViewBag.Title = "Details";
@@ -7,7 +8,6 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Event</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -28,6 +28,59 @@
 
     </dl>
 </div>
+
+<div>
+    <h4>Entries</h4>
+
+    @using (Html.BeginForm("Create", "Entry", FormMethod.Post))
+    {
+        <div class="form-inline">
+            <div class="form-group">
+                @Html.Hidden("EventId", Model.Id, new { @class = "form-control" })
+                @Html.DropDownList("PlayerId", null, new { @class = "form-control col-sm-4" })
+                @Html.DropDownList("AgeGroupId", null, new { @class = "form-control col-sm-4" })
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Enter" class="btn btn-default"/>
+            </div>
+        </div>
+    }
+
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Rating</th>
+            <th>Country</th>
+            <th></th>
+        </tr>
+
+        @if (!Model.Entries.Any())
+        {
+            <tr>
+                <td colspan="4">Currently no entries!</td>
+            </tr>
+        }
+        else
+        {
+            foreach (Entry entry in Model.Entries)
+            {
+                <tr>
+                    <td>@($"{entry.Player.FirstName} {entry.Player.LastName}")</td>
+                    <td>@Html.DisplayFor(m => entry.Player.Rating)</td>
+                    <td>@Html.DisplayFor(m => entry.Player.CountryId)</td>
+                    <td>
+                        @using (Html.BeginForm("Delete", "Entry", FormMethod.Post))
+                        {
+                            <input type="hidden" value="@entry.Id" name="Id" class="form-control"/>
+                            <input type="submit" value="Remove" class="btn btn-default"/>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </table>
+</div>
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")

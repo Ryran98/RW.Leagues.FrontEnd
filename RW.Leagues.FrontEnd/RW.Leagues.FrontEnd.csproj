@@ -169,6 +169,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EntryController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -223,6 +224,10 @@
     <Compile Include="Migrations\202109282315569_AddAgeGroupToEntry.cs" />
     <Compile Include="Migrations\202109282315569_AddAgeGroupToEntry.Designer.cs">
       <DependentUpon>202109282315569_AddAgeGroupToEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109292336563_EntrySeedNumberOptional.cs" />
+    <Compile Include="Migrations\202109292336563_EntrySeedNumberOptional.Designer.cs">
+      <DependentUpon>202109292336563_EntrySeedNumberOptional.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -309,6 +314,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Country\" />
+    <Folder Include="Views\Entry\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -359,6 +365,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202109282315569_AddAgeGroupToEntry.resx">
       <DependentUpon>202109282315569_AddAgeGroupToEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109292336563_EntrySeedNumberOptional.resx">
+      <DependentUpon>202109292336563_EntrySeedNumberOptional.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

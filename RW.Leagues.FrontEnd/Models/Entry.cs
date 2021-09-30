@@ -16,6 +16,6 @@ namespace RW.Leagues.FrontEnd.Models
         public AgeGroup AgeGroup { get; set; }
         [Required]
         public int AgeGroupId { get; set; }
-        public int SeedNumber { get; set; }
+        public int? SeedNumber { get; set; }
     }
 }
