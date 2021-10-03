@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RW.Leagues.FrontEnd.Models
@@ -10,8 +12,9 @@ namespace RW.Leagues.FrontEnd.Models
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
-        [Required]
         public EventType Type { get; set; }
+        [Required]
         public int TypeId { get; set; }
+        public List<Entry> Entries { get; set; }
     }
 }
