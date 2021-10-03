@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net;
-using System.Web;
+using System.Threading.Tasks;
 using System.Web.Mvc;
-using RW.Leagues.FrontEnd;
 using RW.Leagues.FrontEnd.Models;
-using WebGrease.Css.Extensions;
+using RW.Leagues.FrontEnd.ViewModels.Event;
 
 namespace RW.Leagues.FrontEnd.Controllers
 {
@@ -44,10 +40,21 @@ namespace RW.Leagues.FrontEnd.Controllers
             @event.Type = await db.EventTypes.FindAsync(@event.TypeId);
             @event.Entries = await db.Entries.Where(e => e.EventId == @event.Id).ToListAsync();
 
-            ViewBag.PlayerId = new SelectList(db.Players, "Id", "FullName");
-            ViewBag.AgeGroupId = new SelectList(db.AgeGroups, "Id", "Name");
+            List<AgeGroup> ageGroups = await db.AgeGroups.ToListAsync();
 
-            return View(@event);
+            ViewBag.PlayerId = new SelectList(db.Players, "Id", "FullName");
+            ViewBag.AgeGroupId = new SelectList(ageGroups, "Id", "Name");
+
+            Detail model = new Detail
+            {
+                Event = @event,
+                AgeGroups = ageGroups
+            };
+
+            if (Session["EntriesAgeGroupTab"] == null)
+                Session["EntriesAgeGroupTab"] = "U11";
+
+            return View(model);
         }
 
         // GET: Event/Create

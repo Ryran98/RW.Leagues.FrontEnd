@@ -1,5 +1,5 @@
 ﻿@using RW.Leagues.FrontEnd.Models
-@model RW.Leagues.FrontEnd.Models.Event
+@model RW.Leagues.FrontEnd.ViewModels.Event.Detail
 
 @{
     ViewBag.Title = "Details";
@@ -11,19 +11,19 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(m => m.Name)
+            @Html.DisplayNameFor(m => m.Event.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(m => m.Name)
+            @Html.DisplayFor(m => m.Event.Name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(m => m.Type)
+            @Html.DisplayNameFor(m => m.Event.Type)
         </dt>
 
         <dd>
-            @Html.DisplayFor(m => m.Type.Name)
+            @Html.DisplayFor(m => m.Event.Type.Name)
         </dd>
 
     </dl>
@@ -34,54 +34,138 @@
 
     @using (Html.BeginForm("Create", "Entry", FormMethod.Post))
     {
-        <div class="form-inline">
+
+        <div id="new-entry" class="form-inline" style="margin-bottom: 2rem;">
+            <label>New Entry:</label>
             <div class="form-group">
-                @Html.Hidden("EventId", Model.Id, new { @class = "form-control" })
+                @Html.Hidden("EventId", Model.Event.Id, new { @class = "form-control" })
                 @Html.DropDownList("PlayerId", null, new { @class = "form-control col-sm-4" })
-                @Html.DropDownList("AgeGroupId", null, new { @class = "form-control col-sm-4" })
+                @Html.DropDownList("AgeGroupId", null, new { @id = "new-entry-age-group", @class = "form-control col-sm-4" })
             </div>
             <div class="form-group">
-                <input type="submit" value="Enter" class="btn btn-default"/>
+                <input type="submit" value="Enter" class="btn btn-default" />
             </div>
         </div>
     }
 
-    <table class="table">
-        <tr>
-            <th>Name</th>
-            <th>Rating</th>
-            <th>Country</th>
-            <th></th>
-        </tr>
+    <div class="tab">
+        @foreach (AgeGroup ageGroup in Model.AgeGroups)
+        {
+            <button id="entries-tab-@ageGroup.Name" class="tablinks">@ageGroup.Name</button>
+        }
+    </div>
 
-        @if (!Model.Entries.Any())
-        {
-            <tr>
-                <td colspan="4">Currently no entries!</td>
-            </tr>
-        }
-        else
-        {
-            foreach (Entry entry in Model.Entries)
-            {
+    @foreach (AgeGroup ageGroup in Model.AgeGroups)
+    {
+        <div id="@ageGroup.Name" class="tabcontent">
+            <table class="table">
                 <tr>
-                    <td>@($"{entry.Player.FirstName} {entry.Player.LastName}")</td>
-                    <td>@Html.DisplayFor(m => entry.Player.Rating)</td>
-                    <td>@Html.DisplayFor(m => entry.Player.CountryId)</td>
-                    <td>
-                        @using (Html.BeginForm("Delete", "Entry", FormMethod.Post))
-                        {
-                            <input type="hidden" value="@entry.Id" name="Id" class="form-control"/>
-                            <input type="submit" value="Remove" class="btn btn-default"/>
-                        }
-                    </td>
+                    <th>Name</th>
+                    <th>Rating</th>
+                    <th>Country</th>
+                    <th></th>
                 </tr>
-            }
-        }
-    </table>
+                @if (Model.Event.Entries.Any(e => e.AgeGroupId == ageGroup.Id))
+                {
+                    foreach (Entry entry in Model.Event.Entries.Where(e => e.AgeGroupId == ageGroup.Id))
+                    {
+                        <tr>
+                            <td>@($"{entry.Player.FirstName} {entry.Player.LastName}")</td>
+                            <td>@Html.DisplayFor(m => entry.Player.Rating)</td>
+                            <td>@Html.DisplayFor(m => entry.Player.CountryId)</td>
+                            <td>
+                                @using (Html.BeginForm("Delete", "Entry", FormMethod.Post))
+                                {
+                                    <input type="hidden" value="@entry.Id" name="Id" class="form-control" />
+                                    <input type="submit" value="Remove" class="btn btn-default" />
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4">Currently no entries for @ageGroup.Name</td>
+                    </tr>
+                }
+            </table>
+        </div>
+    }
+
 </div>
 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Event.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function() {
+
+            setAgeGroupTabsOnClick();
+            setNewEntryAgeGroupDrowndownOnChange();
+
+            setCurrentEntriesAgeGroupTab();
+
+            function setAgeGroupTabsOnClick() {
+                $("[id^=entries-tab-]").on("click",
+                    function() {
+                        var idElements = $(this).attr("id").split("-");
+                        var ageGroup = idElements[idElements.length - 1];
+
+                        openAgeGroup($(this), ageGroup);
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/session/set?name=EntriesAgeGroupTab",
+                            data: JSON.stringify({
+                                NewValue: ageGroup
+                            }),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json"
+                        });
+                    });
+            }
+
+            function setNewEntryAgeGroupDrowndownOnChange() {
+                $("#new-entry-age-group").on("change",
+                    function() {
+                        var selection = $(this).children("option:selected").val();
+                    });
+            }
+
+            function setCurrentEntriesAgeGroupTab() {
+                $.ajax({
+                    type: "POST",
+                    url: "/session/get?name=EntriesAgeGroupTab",
+                    success: function(data) {
+                        document.getElementById(`entries-tab-${data}`).click();
+                    }
+                });
+            };
+
+            function openAgeGroup(tab, ageGroup) {
+                var i, tabcontent, tablinks;
+
+                tabcontent = document.getElementsByClassName("tabcontent");
+
+                for (i = 0; i < tabcontent.length; i++) {
+                    tabcontent[i].style.display = 'none';
+                }
+
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
+
+                document.getElementById(ageGroup).style.display = "block";
+                tab.addClass("active");
+            }
+        });
+    </script>
+}
