@@ -17,7 +17,10 @@ namespace RW.Leagues.FrontEnd.Migrations
 
         protected override void Seed(ApplicationDbContext db)
         {
-            List<Player> players = _Players();
+            List<Country> countries = _Countries();
+            countries.ForEach(c => db.Countries.AddOrUpdate(c));
+
+            List<Player> players = _Players(db);
             players.ForEach(p => db.Players.AddOrUpdate(p));
 
             List<EventType> eventTypes = _EventTypes();
@@ -29,8 +32,24 @@ namespace RW.Leagues.FrontEnd.Migrations
             db.SaveChanges();
         }
 
-        private List<Player> _Players()
+        private List<Country> _Countries()
         {
+            List<Country> countries = new List<Country>
+            {
+                new Country
+                {
+                    Id = 1,
+                    Name = "England"
+                }
+            };
+
+            return countries;
+        }
+
+        private List<Player> _Players(ApplicationDbContext db)
+        {
+            Country country = db.Countries.FirstOrDefault(c => c.Id == 1);
+
             List<Player> players = new List<Player>
             {
                 new Player
@@ -38,7 +57,9 @@ namespace RW.Leagues.FrontEnd.Migrations
                     Id = 1,
                     FirstName = "Ryan",
                     LastName = "Wilson",
-                    DateOfBirth = new DateTime(1998, 01, 05)
+                    DateOfBirth = new DateTime(1998, 01, 05),
+                    Country = country,
+                    CountryId = 1
                 }
             };
 

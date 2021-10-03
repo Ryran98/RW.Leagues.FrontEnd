@@ -45,16 +45,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.7\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -112,12 +124,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -169,8 +175,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EntryController.cs" />
+    <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\PlayerController.cs" />
+    <Compile Include="Controllers\SessionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -190,17 +200,58 @@
     <Compile Include="Migrations\202010230954581_AddEventAndEventType.Designer.cs">
       <DependentUpon>202010230954581_AddEventAndEventType.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202109222331536_AddEntries.cs" />
+    <Compile Include="Migrations\202109222331536_AddEntries.Designer.cs">
+      <DependentUpon>202109222331536_AddEntries.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109222352556_AddMatches.cs" />
+    <Compile Include="Migrations\202109222352556_AddMatches.Designer.cs">
+      <DependentUpon>202109222352556_AddMatches.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109222359196_AddTableNameToMatch.cs" />
+    <Compile Include="Migrations\202109222359196_AddTableNameToMatch.Designer.cs">
+      <DependentUpon>202109222359196_AddTableNameToMatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109242334483_AddCountryToPlayer.cs" />
+    <Compile Include="Migrations\202109242334483_AddCountryToPlayer.Designer.cs">
+      <DependentUpon>202109242334483_AddCountryToPlayer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109242351105_AddRatingToPlayer.cs" />
+    <Compile Include="Migrations\202109242351105_AddRatingToPlayer.Designer.cs">
+      <DependentUpon>202109242351105_AddRatingToPlayer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109252350585_AddAgeGroupAndRank.cs" />
+    <Compile Include="Migrations\202109252350585_AddAgeGroupAndRank.Designer.cs">
+      <DependentUpon>202109252350585_AddAgeGroupAndRank.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109260008141_AddSeedNumberToEntry.cs" />
+    <Compile Include="Migrations\202109260008141_AddSeedNumberToEntry.Designer.cs">
+      <DependentUpon>202109260008141_AddSeedNumberToEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109282315569_AddAgeGroupToEntry.cs" />
+    <Compile Include="Migrations\202109282315569_AddAgeGroupToEntry.Designer.cs">
+      <DependentUpon>202109282315569_AddAgeGroupToEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202109292336563_EntrySeedNumberOptional.cs" />
+    <Compile Include="Migrations\202109292336563_EntrySeedNumberOptional.Designer.cs">
+      <DependentUpon>202109292336563_EntrySeedNumberOptional.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AgeGroup.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
+    <Compile Include="Models\Country.cs" />
     <Compile Include="Models\Entry.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\EventType.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Match.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\Rank.cs" />
+    <Compile Include="Models\SessionVariable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\Event\Detail.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -258,9 +309,23 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Player\Create.cshtml" />
+    <Content Include="Views\Player\Delete.cshtml" />
+    <Content Include="Views\Player\Details.cshtml" />
+    <Content Include="Views\Player\Edit.cshtml" />
+    <Content Include="Views\Player\Index.cshtml" />
+    <Content Include="Views\Event\Create.cshtml" />
+    <Content Include="Views\Event\Delete.cshtml" />
+    <Content Include="Views\Event\Details.cshtml" />
+    <Content Include="Views\Event\Edit.cshtml" />
+    <Content Include="Views\Event\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\AgeGroup\" />
+    <Folder Include="Views\Country\" />
+    <Folder Include="Views\Entry\" />
+    <Folder Include="Views\Session\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -287,6 +352,33 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010230954581_AddEventAndEventType.resx">
       <DependentUpon>202010230954581_AddEventAndEventType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109222331536_AddEntries.resx">
+      <DependentUpon>202109222331536_AddEntries.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109222352556_AddMatches.resx">
+      <DependentUpon>202109222352556_AddMatches.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109222359196_AddTableNameToMatch.resx">
+      <DependentUpon>202109222359196_AddTableNameToMatch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109242334483_AddCountryToPlayer.resx">
+      <DependentUpon>202109242334483_AddCountryToPlayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109242351105_AddRatingToPlayer.resx">
+      <DependentUpon>202109242351105_AddRatingToPlayer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109252350585_AddAgeGroupAndRank.resx">
+      <DependentUpon>202109252350585_AddAgeGroupAndRank.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109260008141_AddSeedNumberToEntry.resx">
+      <DependentUpon>202109260008141_AddSeedNumberToEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109282315569_AddAgeGroupToEntry.resx">
+      <DependentUpon>202109282315569_AddAgeGroupToEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202109292336563_EntrySeedNumberOptional.resx">
+      <DependentUpon>202109292336563_EntrySeedNumberOptional.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
