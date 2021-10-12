@@ -107,10 +107,13 @@
     <script>
         $(document).ready(function() {
 
+            $("#PlayerId").attr('data-live-search', true);
+
             setAgeGroupTabsOnClick();
             setNewEntryAgeGroupDrowndownOnChange();
 
             setCurrentEntriesAgeGroupTab();
+            setCurrentNewEntryAgeGroupDropdown();
 
             function setAgeGroupTabsOnClick() {
                 $("[id^=entries-tab-]").on("click",
@@ -119,23 +122,7 @@
                         var ageGroup = idElements[idElements.length - 1];
 
                         openAgeGroup($(this), ageGroup);
-
-                        $.ajax({
-                            type: "POST",
-                            url: "/session/set?name=EntriesAgeGroupTab",
-                            data: JSON.stringify({
-                                NewValue: ageGroup
-                            }),
-                            contentType: "application/json; charset=utf-8",
-                            dataType: "json"
-                        });
-                    });
-            }
-
-            function setNewEntryAgeGroupDrowndownOnChange() {
-                $("#new-entry-age-group").on("change",
-                    function() {
-                        var selection = $(this).children("option:selected").val();
+                        setSessionVariable("EntriesAgeGroupTab", ageGroup);
                     });
             }
 
@@ -165,6 +152,38 @@
 
                 document.getElementById(ageGroup).style.display = "block";
                 tab.addClass("active");
+            }
+
+            function setNewEntryAgeGroupDrowndownOnChange() {
+                $("#new-entry-age-group").on("change",
+                    function () {
+                        var selection = $(this).children("option:selected").val();
+                        setSessionVariable("NewEntryAgeGroupDropdown", selection);
+                    });
+            }
+
+            function setCurrentNewEntryAgeGroupDropdown() {
+                $.ajax({
+                    type: "POST",
+                    url: "/session/get?name=NewEntryAgeGroupDropdown",
+                    success: function (data) {
+                        console.log(data);
+                        var ageGroupDropdown = document.getElementById("new-entry-age-group");
+                        ageGroupDropdown.value = data;
+                    }
+                });
+            }
+
+            function setSessionVariable(name, value) {
+                $.ajax({
+                    type: "POST",
+                    url: `/session/set?name=${name}`,
+                    data: JSON.stringify({
+                        NewValue: value
+                    }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json"
+                });
             }
         });
     </script>

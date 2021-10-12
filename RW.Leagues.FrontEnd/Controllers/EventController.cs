@@ -51,8 +51,13 @@ namespace RW.Leagues.FrontEnd.Controllers
                 AgeGroups = ageGroups
             };
 
+            string defaultAgeGroup = "U11";
+
             if (Session["EntriesAgeGroupTab"] == null)
-                Session["EntriesAgeGroupTab"] = "U11";
+                Session["EntriesAgeGroupTab"] = defaultAgeGroup;
+
+            if (Session["NewEntryAgeGroupDropdown"] == null)
+                Session["NewEntryAgeGroupDropdown"] = ageGroups.First(a => a.Name == defaultAgeGroup).Id;
 
             return View(model);
         }
